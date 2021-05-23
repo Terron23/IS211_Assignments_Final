@@ -125,7 +125,6 @@
                             {% endif %}
                             Rating: {{rating}}<br /><br />
                             {% if isbn is not none%}
-    [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title, googleLink.replace('>>', '&')])
                             <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}&googleLink={{info.replace('&', '>>')}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
