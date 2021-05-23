@@ -16,7 +16,7 @@ def connect_db():
 
     cur = con.cursor()
     cur.execute("CREATE TABLE if not exists users (id INTEGER PRIMARY KEY, email TEXT, password TEXT);")
-    cur.execute("CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_id integer, author text, pagecount integer, rating text, image text);")
+    cur.execute("CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_id integer, author text, pagecount integer, rating text, image text, title text);")
     return con
 
 
@@ -67,12 +67,13 @@ def view_home():
             if len(books_saved_fetch) < 1:
                 arr = None
             else:
-                for i in books_saved_fetch:
-                    req = requests.get(f'https://www.googleapis.com/books/v1/volumes?q=isbn:{i[1]}')
-                    for j in req.json()['items']:
-                        j['volumeInfo']['isbn'] = i[1]
-                        j['volumeInfo']['user_book_id'] = i[0]
-                        arr.append(j['volumeInfo'])
+                arr = books_saved_fetch
+                # for i in books_saved_fetch:
+                #     req = requests.get(f'https://www.googleapis.com/books/v1/volumes?q=isbn:{i[1]}')
+                #     for j in req.json()['items']:
+                #         j['volumeInfo']['isbn'] = i[1]
+                #         j['volumeInfo']['user_book_id'] = i[0]
+                #         arr.append(j['volumeInfo'])
             return render_template("index.html", title="Home", session=session['username'], user_books = arr)
     except:
         return redirect("/login")
@@ -116,9 +117,12 @@ def saveBooks():
     author = request.args.get('author')
     pageCount = request.args.get('pageCount')
     rating = request.args.get('rating')
-    print(isbn, rating, pageCount, author)
-    g.db.execute("insert into booksOwned (user_id, isbn, author, pagecount, rating) values(?, ?, ?, ?, ?)", 
-    [session["id"], isbn, " ".join(author), pageCount, rating])
+    image = request.args.get('image')
+    title = request.args.get('title')
+    print("------------------------------------------------")
+    print(isbn, rating, pageCount, image)
+    g.db.execute("insert into booksOwned (user_id, isbn, author, pagecount, rating, image, title) values(?, ?, ?, ?, ?, ?, ?)", 
+    [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title])
     g.db.commit()
     books_saved = g.db.execute("SELECT * FROM booksOwned where user_id=?", [session["id"]])
     books_saved_fetch = books_saved.fetchall()
@@ -142,4 +146,4 @@ def view_error():
 
 if __name__=='__main__':
     app.debug = True
-    app.run(host = '0.0.0.0', port=5002)
+    app.run(host = '0.0.0.0', port=5003)
