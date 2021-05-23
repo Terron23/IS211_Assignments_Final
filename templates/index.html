@@ -38,13 +38,13 @@
         </nav>
 
         <div class="jumbotron" style="padding:10px">
-            <h4 class="display-5">
+            <h4>
                 <form class="form-inline" action="/getbook" method="POST">
                 <div class="form-group">
-                    <label>Search By ISBN</label>
-                    <input type="text" name="isbn" required/>
+                    <label>Search By ISBN:</label>
+                    <input style="border-radius: 0;" type="text" name="isbn" class="form-control" required/>
                     </div>
-                    <button class="btn  btn-info" type="submit">Search by ISBN</button>
+                    <button style="border-radius: 0;" class="btn  btn-info" type="submit">Search by ISBN</button>
                 </form>
                 <hr />
                 <form class="form-inline" action="/getbooktitle" method="POST">
@@ -52,9 +52,9 @@
                        
                         <div class="form-group">
                             <label>Search By Title</label>
-                            <input type="text" name="title" required/>
+                            <input style="border-radius: 0;" type="text" name="title" class="form-control" required/>
                             </div>
-                            <button class="btn  btn-info" type="submit">Search by Title</button>
+                            <button style="border-radius: 0;" class="btn  btn-info" type="submit">Search by Title</button>
                     </form>
             </h4>
             <hr />
@@ -69,18 +69,17 @@
                     <hr />
                     <div class="row">
                     {% for i in user_books%}
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="row">
-                            <div class="col-6">
+                            <div class="col-md-6">
                             <img src="{{i[6]}}" class="img"/> 
                             </div>
-                            <div class="col-6">
-                            <b>{{i.title}}</b> <br />
-                            isbn: {{i[1]}}<br />
+                            <div class="col-md-6">
+                            <b>{{i[7]}}</b> <br />
                             Author: {{i[3].replace('[', "").replace(']', "").replace("'", "")}}<br />
                             Page Count: {{i[4]}}<br />
                             Rating: {{i[5]}}<br /><br />
-                            <!-- <a href="/getbook?isbn={{i.isbn}}&title={{i[7]}}" class="btn btn-primary btn-sm">View More</a><br /><br /> -->
+                           <a href="/getbooktitle?title={{i[7]}}" class="btn btn-primary btn-sm">View Similar Titles</a><br /><br />
                             <a href="/deletebook?id={{i[0]}}" class="btn btn-danger btn-sm">Delete Book</a><br /><br />
                         </div>
                     </div>
@@ -112,13 +111,18 @@
                             <b>{{i.volumeInfo.title}}</b><br/>
                             Author: {{" | ".join(i.volumeInfo.authors)}}<br />
                             Page Count: {{i.volumeInfo.pageCount}}<br />
-                            Rating: {{i.volumeInfo.maturityRating}}<br /><br />
+                            {% if 'averageRating' in i.volumeInfo %}
+                            {% set rating = i.volumeInfo.averageRating %}
+                            {% else %}
+                            {% set rating = i.volumeInfo.maturityRating %}
+                            {% endif %}
+                            Rating: {{rating}}<br /><br />
                             {% if isbn is not none%}
-                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{i.volumeInfo.maturityRating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% else %}
-                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{i.volumeInfo.maturityRating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% endif %}
@@ -131,6 +135,7 @@
                         <div class="col-2">
                         </div>
                     </div>
+                    <hr />
                     {% endfor %}
 
                 {% elif 'Error' in title %}

@@ -108,7 +108,13 @@ def view_getBooksTitle():
         title = request.args.get('title')
     req = requests.get(f'https://www.googleapis.com/books/v1/volumes?q=title={title}')
     lis = list(req.json()['items'])
-    
+    books_saved = g.db.execute("SELECT * FROM booksOwned where user_id=?", [session["id"]])
+    books_saved_fetch = books_saved.fetchall()
+    if len(books_saved_fetch) > 0:
+        for i in books_saved_fetch:
+            title_filter = i[7]
+            lis = list(filter(lambda x: x['volumeInfo']['title'] != title_filter, lis))
+                    
     return render_template("index.html", title="Your Results", book=lis, isbn=None, bookTitle=title)
 
 @app.route("/savebook", methods=["POST"])

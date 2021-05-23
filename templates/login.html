@@ -32,24 +32,24 @@
             </div>
         </nav>
 
-        <div class="jumbotron">
-                    <h1>
+        <div class="jumbotron" style="padding:10px">
+                    <h3>
                         Login to view Your Books
                         <hr />
-                        <form action="/login" method="Post">
-                            <div class="form-group">
+                        <form class="form" action="/login" method="Post">
+                            <div class="form-group col-6">
                                 <label>Email</label><br />
-                                <input type="email" name="email"/>
+                                <input type="email" name="email" class="form-control" />
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-6">
                                 <label>Password</label><br />
-                                <input type="password" name="password"/>
+                                <input type="password" name="password" class="form-control"/>
                                 </div>
                             <div class="form-group">
                            <button type="submit" class="btn btn-primary">Log In</button>
                         </div>
                         </form>
-                    </h1>
+                    </h3>
 	   
         </div>
     </div>
