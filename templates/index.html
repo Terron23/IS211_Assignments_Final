@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title> {{title}} | Bedstuy Book catalouge</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Bedstuy Book Catalouge</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('view_home') }}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                   
+                    
+                    {% if session is not none %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif%}
+                </ul>
+            </div>
+        </nav>
+
+        <div class="jumbotron" style="padding:10px">
+            <h4 class="display-5">
+                <form class="form-inline" action="/getbook" method="POST">
+                <div class="form-group">
+                    <label>Search By ISBN</label>
+                    <input type="text" name="isbn" required/>
+                    </div>
+                    <button class="btn  btn-info" type="submit">Search by ISBN</button>
+                </form>
+                <!-- <hr />
+                <form class="form-inline" action="/getbooktitle" method="POST">
+                    <div class="form-group">
+                       
+                        <div class="form-group">
+                            <label>Search By Title</label>
+                            <input type="text" name="title" required/>
+                            </div>
+                            <button class="btn  btn-info" type="submit">Search by Title</button>
+                    </form> -->
+            </h4>
+            <hr />
+          		{% if 'Home' in title  %}
+                  
+                <div>
+                    
+                    {% if user_books is none %}
+                    <h5 class="text-danger">You have not saved any books yet</h5>
+                    {% else %}
+                    <h3>Your Saved Books</h3>
+                    <hr />
+                    <div class="row">
+                    {% for i in user_books%}
+                        <div class="col-6">
+                            <div class="row">
+                                {% if 'imageLinks' in i  %}
+                                {% if 'thumbnail' in i.imageLinks  %}
+                            <div class="col-6">
+                            <img src={{i.imageLinks.thumbnail}} class="image"/> 
+                            </div>
+
+                            {% endif %}
+                            {% endif %}
+                            <div class="col-6">
+                            <b>{{i.title}}</b> <br />
+                            isbn: {{i.isbn}}<br />
+                            Author: {{" | ".join(i.authors)}}<br />
+                            Page Count: {{i.pageCount}}<br />
+                            Rating: {{i.maturityRating}}<br /><br />
+                            <a href="/getbook?isbn={{i.isbn}}&title={{i.title}}" class="btn btn-primary btn-sm">View More</a><br /><br />
+                            <a href="/deletebook?id={{i.user_book_id}}" class="btn btn-danger btn-sm">Delete Book</a><br /><br />
+                        </div>
+                    </div>
+                            <hr />
+                        </div>
+                    {% endfor %}
+                </div>
+                    {% endif %}
+                </div>
+                	{% elif 'Results' in title  %}
+                   
+                    {% for i in book %}
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            {% if 'imageLinks' in i.volumeInfo  %}
+                            {% if 'thumbnail' in i.volumeInfo.imageLinks  %}
+                            <img src={{i.volumeInfo.imageLinks.thumbnail}} class="image"/> 
+                            <br />
+                            {% endif %}
+                            {% endif %}
+                            <b>{{i.volumeInfo.title}}</b><br/>
+                            Author: {{" | ".join(i.volumeInfo.authors)}}<br />
+                            Page Count: {{i.volumeInfo.pageCount}}<br />
+                            Rating: {{i.volumeInfo.maturityRating}}<br /><br />
+                            {% if isbn is not none%}
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{i.volumeInfo.maturityRating}}&author={{i.volumeInfo.authors}}">
+                                <input type="submit" value="Save" class="btn btn-success"/>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="/savebook?isbn={{i.volumeInfo.title}}&pageCount={{i.volumeInfo.pageCount}}&rating={{i.volumeInfo.maturityRating}}&author={{i.volumeInfo.authors|join(' | ') }}">
+                                <input type="submit" value="Save" class="btn btn-success"/>
+                            </form>
+                            {% endif %}
+                           
+                            <hr />
+                            {% if 'description' in i.volumeInfo %}
+                            <small style="font-size: 12px; line-height: 0%;">{{i.volumeInfo.description}}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                {% elif 'Error' in title %}
+                <h1>Okay,  So an error occured</h1>
+                <h2>Most Likey due to a wrong ISBN Number</h2>
+                <h2>Please Enter a new number</h2>
+                <h3>If that doesn't work then a serious issue occured. Please refresh, logout, delete the db , and award points for effort lol</h3>
+
+          		{% else %}
+          		  Default title
+          		{% endif %}
+	   
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
