@@ -22,5 +22,6 @@ If running from the commandline use python app.py or python3.app.py<br />
 I have encountered server overload issues. Most likely this will be fixed by refreshing your screen
 <b>Note:</b> There are slight difference between the master branch and what exists on pythonanywhere. There is a slight change to the table schema and additional button added to the home page of the pythonanywhere code. To view the changes for the python anywhere code check the branch <b>pythonanywhere</b>
 
-
+## Mobile 
+<b>Application is Mobile Friendly</b> :sunglasses:
 
