@@ -9,7 +9,7 @@ Otherwise application should be straightforward. Homepage contains books saved a
 Furthermore App is built in the form of an SPA so all front end logic with the exception of the login page can be found on the index.html page.
 
 ## Database
-The database contains two tables users and booksOwned. Table schemas can be found below:
+The database contains two tables users and booksOwned. Table schemas can be found below:<br />
 CREATE TABLE if not exists users (id INTEGER PRIMARY KEY, email TEXT, password TEXT
 CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_id integer, author text, pagecount integer, rating text, image text, title text
 
