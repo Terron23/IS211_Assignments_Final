@@ -127,7 +127,11 @@ def saveBooks():
     title = request.args.get('title')
     googleLink = request.args.get('googleLink')
     print("------------------------------------------------")
-    print(isbn, rating, pageCount, image)
+    print(request.args)
+    if googleLink is None:
+        googleLink = '/'
+    if image is None:
+        image = '#'
     g.db.execute("insert into booksOwned (user_id, isbn, author, pagecount, rating, image, title, googleLink) values(?, ?, ?, ?, ?, ?, ?, ?)", 
     [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title, googleLink.replace('>>', '&')])
     g.db.commit()

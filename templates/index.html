@@ -111,11 +111,18 @@
                             {% set img = "#" %}
                             {% endif %}
 
+                            {% if img is none %}
+                            {% set img = '#' %}
+                            {% endif %}
+
                             {% if 'infoLink' in i.volumeInfo  %}
                             
                             {% set info = i.volumeInfo.infoLink %}
                             {% else %}
                             {% set info = "/" %}
+                            {% endif %}
+                            {% if info is none %}
+                            {% set info = '/' %}
                             {% endif %}
                             <img src={{img}} class="image"/> 
                             <br />
