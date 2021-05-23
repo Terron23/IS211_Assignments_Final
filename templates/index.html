@@ -80,6 +80,7 @@
                             Page Count: {{i[4]}}<br />
                             Rating: {{i[5]}}<br /><br />
                            <a href="/getbooktitle?title={{i[7]}}" class="btn btn-primary btn-sm">View Similar Titles</a><br /><br />
+                           <a href="{{i[8]}}" target="_blank" class="btn btn-primary btn-sm">View On Google</a><br /><br />
                             <a href="/deletebook?id={{i[0]}}" class="btn btn-danger btn-sm">Delete Book</a><br /><br />
                         </div>
                     </div>
@@ -104,7 +105,13 @@
                             {% endif %}
                             {% else %}
                             {% set img = "#" %}
+                            {% endif %}
+
+                            {% if 'infoLink' in i.volumeInfo  %}
                             
+                            {% set info = i.volumeInfo.imageLinks.thumbnail %}
+                            {% else %}
+                            {% set info = "/" %}
                             {% endif %}
                             <img src={{img}} class="image"/> 
                             <br />
@@ -118,11 +125,12 @@
                             {% endif %}
                             Rating: {{rating}}<br /><br />
                             {% if isbn is not none%}
-                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
+    [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title, googleLink.replace('>>', '&')])
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}&googleLink={{info.replace('&', '>>')}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% else %}
-                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}">
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}&googleLink={{i.volumeInfo.infoLink}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% endif %}

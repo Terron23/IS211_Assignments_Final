@@ -16,7 +16,7 @@ def connect_db():
 
     cur = con.cursor()
     cur.execute("CREATE TABLE if not exists users (id INTEGER PRIMARY KEY, email TEXT, password TEXT);")
-    cur.execute("CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_id integer, author text, pagecount integer, rating text, image text, title text);")
+    cur.execute("CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_id integer, author text, pagecount integer, rating text, image text, title text, googleLink text);")
     return con
 
 
@@ -125,10 +125,11 @@ def saveBooks():
     rating = request.args.get('rating')
     image = request.args.get('image')
     title = request.args.get('title')
+    googleLink = request.args.get('googleLink')
     print("------------------------------------------------")
     print(isbn, rating, pageCount, image)
-    g.db.execute("insert into booksOwned (user_id, isbn, author, pagecount, rating, image, title) values(?, ?, ?, ?, ?, ?, ?)", 
-    [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title])
+    g.db.execute("insert into booksOwned (user_id, isbn, author, pagecount, rating, image, title, googleLink) values(?, ?, ?, ?, ?, ?, ?, ?)", 
+    [session["id"], isbn, author, pageCount, rating, image.replace('>>', '&'), title, googleLink.replace('>>', '&')])
     g.db.commit()
     books_saved = g.db.execute("SELECT * FROM booksOwned where user_id=?", [session["id"]])
     books_saved_fetch = books_saved.fetchall()
