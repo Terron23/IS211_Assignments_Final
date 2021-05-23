@@ -109,7 +109,7 @@
 
                             {% if 'infoLink' in i.volumeInfo  %}
                             
-                            {% set info = i.volumeInfo.imageLinks.thumbnail %}
+                            {% set info = i.volumeInfo.infoLink %}
                             {% else %}
                             {% set info = "/" %}
                             {% endif %}
