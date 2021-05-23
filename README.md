@@ -24,7 +24,7 @@ If running from the commandline use python app.py or python3 app.py<br />
 
 ## PythonAnywhere 
 I have encountered server overload issues. This will be fixed by refreshing your screen<br />
-<b>Note:</b> There are slight differences between the master branch and what exists on the website (http://tmj.pythonanywhere.com/). On the website there is an extra column (googleLink) added to the <i>booksOwned<i> table schema and an additional button added to the home page. To grab the code which powers the deployed web application (http://tmj.pythonanywhere.com/) git pull and then git checkout the branch <code>pythonanywhere</code>
+<b>Note:</b> There are slight differences between the master branch and what exists on the website (http://tmj.pythonanywhere.com/). On the website there is an extra column (googleLink) added to the <i>booksOwned</i> table schema and an additional button added to the home page. To grab the code which powers the deployed web application (http://tmj.pythonanywhere.com/) <code>git pull</code> and then <code>git checkout pythonanywhere</code>
 
 ## Mobile 
 <b>Application is Mobile Friendly</b> :sunglasses:
