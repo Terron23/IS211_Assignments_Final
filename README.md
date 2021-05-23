@@ -15,12 +15,12 @@ CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_
 <b>Note:</b> The rating field = averageRating if the selected item has an averageRating key in the api. If averaRating is missing from the api the maturityRating gets added instead.
 
 ## Application startup
-If running from the commandline use python app.py or python3.app.py<br />
+If running from the commandline use python app.py or python3 app.py<br />
 <b>Note</b>: In the event of an issue delete the db and restart the app 
 
 ## PythonAnywhere 
 I have encountered server overload issues. Most likely this will be fixed by refreshing your screen
-<b>Note:</b> There are slight difference between the master branch and what exists on pythonanywhere. There is a slight change to the table schema and additional button added to the home page of the pythonanywhere code. To view the changes for the python anywhere code check the branch <b>pythonanywhere</b>
+<b>Note:</b> There are slight differences between the master branch and what exists on pythonanywhere. There is a slight change to the table schema and additional button added to the home page of the pythonanywhere code. To view the changes for the python anywhere code check out the branch <b>pythonanywhere</b>
 
 ## Mobile 
 <b>Application is Mobile Friendly</b> :sunglasses:
