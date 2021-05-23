@@ -130,7 +130,7 @@
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% else %}
-                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}&googleLink={{i.volumeInfo.infoLink}}">
+                            <form method="POST" action="/savebook?isbn={{isbn}}&pageCount={{i.volumeInfo.pageCount}}&rating={{rating}}&author={{i.volumeInfo.authors}}&image={{img.replace('&', '>>')}}&title={{i.volumeInfo.title}}&googleLink={{info.replace('&', '>>')}}">
                                 <input type="submit" value="Save" class="btn btn-success"/>
                             </form>
                             {% endif %}
