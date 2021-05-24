@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, session, g, redirect, render_template
+from flask import Flask, request, session, g, redirect, render_template, flash
 import requests
 
 
@@ -43,7 +43,6 @@ def login():
             g.db.commit()
         user = g.db.execute("SELECT * FROM users where email = ? and password = ?", [email, password])
         user_fetch = user.fetchall()
-        
         session["username"] = email 
         session["id"] = user_fetch[0][0]
         if session['username'] != email:
@@ -63,18 +62,20 @@ def view_home():
             books_saved = g.db.execute("SELECT * FROM booksOwned where user_id=?", [session["id"]])
             books_saved_fetch = books_saved.fetchall()
             arr = []
+            total = 0
             print(books_saved_fetch, "home")
             if len(books_saved_fetch) < 1:
                 arr = None
             else:
                 arr = books_saved_fetch
+                total= len(books_saved_fetch)
                 # for i in books_saved_fetch:
                 #     req = requests.get(f'https://www.googleapis.com/books/v1/volumes?q=isbn:{i[1]}')
                 #     for j in req.json()['items']:
                 #         j['volumeInfo']['isbn'] = i[1]
                 #         j['volumeInfo']['user_book_id'] = i[0]
                 #         arr.append(j['volumeInfo'])
-            return render_template("index.html", title="Home", session=session['username'], user_books = arr)
+            return render_template("index.html", title="Home", session=session['username'], user_books = arr, total=total)
     except:
         return redirect("/login")
     
@@ -127,7 +128,7 @@ def saveBooks():
     title = request.args.get('title')
     googleLink = request.args.get('googleLink')
     print("------------------------------------------------")
-    print(request.args)
+    flash(f'{title} has been saved')
     if googleLink is None:
         googleLink = '/'
     if image is None:
