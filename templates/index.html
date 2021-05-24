@@ -95,12 +95,7 @@
                     {% endif %}
                 </div>
                 	{% elif 'Results' in title  %}
-                    {% for message in get_flashed_messages() %}
-                            <div class="alert alert-success">
-                                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <small>{{ message }}</small>
-                            </div>
-                            {% endfor %}
+                 
                     {% for i in book %}
                     <div class="row">
                         <div class="col-2">
