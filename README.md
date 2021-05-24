@@ -2,6 +2,7 @@
 
 ## pythonanywhere: http://tmj.pythonanywhere.com/
 
+## Book Catalogue 
 The application uses an email and passcode to login.<br />
 The isbn field should only contain the <b>isbn number</b>
 
@@ -17,6 +18,7 @@ CREATE TABLE if not exists  booksOwned (id INTEGER PRIMARY KEY, isbn TEXT, user_
 ## Web Frameworks
 Flask<br />
 Bootstrap<br />
+jquery<br/>
 
 ## Application startup
 If running from the commandline use python app.py or python3 app.py<br />
