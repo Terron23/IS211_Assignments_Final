@@ -108,7 +108,10 @@ def view_getBooksTitle():
     elif request.method == 'GET':
         title = request.args.get('title')
     req = requests.get(f'https://www.googleapis.com/books/v1/volumes?q=title={title}')
-    lis = list(req.json()['items'])
+    if 'items' in req.json():
+        lis = list(req.json()['items'])
+    else:
+        return redirect("/error")
     books_saved = g.db.execute("SELECT * FROM booksOwned where user_id=?", [session["id"]])
     books_saved_fetch = books_saved.fetchall()
     if len(books_saved_fetch) > 0:
